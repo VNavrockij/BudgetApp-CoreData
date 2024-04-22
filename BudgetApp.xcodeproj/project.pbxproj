@@ -13,6 +13,7 @@
 		FA6A70D02BD6BD3600244F04 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = FA6A70CF2BD6BD3600244F04 /* Base */; };
 		FA6A70D82BD6BE1400244F04 /* BudgetCategoriesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6A70D72BD6BE1400244F04 /* BudgetCategoriesTableViewController.swift */; };
 		FA6A70DB2BD6BED000244F04 /* BudgetModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = FA6A70D92BD6BED000244F04 /* BudgetModel.xcdatamodeld */; };
+		FA6A70DD2BD6C9C700244F04 /* AddBudgetCategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6A70DC2BD6C9C700244F04 /* AddBudgetCategoryViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +25,7 @@
 		FA6A70D12BD6BD3600244F04 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FA6A70D72BD6BE1400244F04 /* BudgetCategoriesTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetCategoriesTableViewController.swift; sourceTree = "<group>"; };
 		FA6A70DA2BD6BED000244F04 /* BudgetModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = BudgetModel.xcdatamodel; sourceTree = "<group>"; };
+		FA6A70DC2BD6C9C700244F04 /* AddBudgetCategoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddBudgetCategoryViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -59,6 +61,7 @@
 				FA6A70C32BD6BD3300244F04 /* AppDelegate.swift */,
 				FA6A70C52BD6BD3300244F04 /* SceneDelegate.swift */,
 				FA6A70D72BD6BE1400244F04 /* BudgetCategoriesTableViewController.swift */,
+				FA6A70DC2BD6C9C700244F04 /* AddBudgetCategoryViewController.swift */,
 				FA6A70CC2BD6BD3600244F04 /* Assets.xcassets */,
 				FA6A70CE2BD6BD3600244F04 /* LaunchScreen.storyboard */,
 				FA6A70D12BD6BD3600244F04 /* Info.plist */,
@@ -140,6 +143,7 @@
 				FA6A70DB2BD6BED000244F04 /* BudgetModel.xcdatamodeld in Sources */,
 				FA6A70C42BD6BD3300244F04 /* AppDelegate.swift in Sources */,
 				FA6A70D82BD6BE1400244F04 /* BudgetCategoriesTableViewController.swift in Sources */,
+				FA6A70DD2BD6C9C700244F04 /* AddBudgetCategoryViewController.swift in Sources */,
 				FA6A70C62BD6BD3300244F04 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
