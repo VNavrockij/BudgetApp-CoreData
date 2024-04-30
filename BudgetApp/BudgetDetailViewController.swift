@@ -11,6 +11,7 @@ import CoreData
 class BudgetDetailViewController: UIViewController {
 
     private var persistentContainer: NSPersistentContainer
+    private var fetchResultsController: NSFetchedResultsController<Transaction>!
     private var budgetCategory: BudgetCategory
 
     private enum Constant: String {
@@ -69,6 +70,25 @@ class BudgetDetailViewController: UIViewController {
         self.budgetCategory = budgetCategory
         self.persistentContainer = persistentContainer
         super.init(nibName: nil, bundle: nil)
+
+        // create request based on selected budget category
+        let request = Transaction.fetchRequest()
+        request.predicate = NSPredicate(format: "category = %@", budgetCategory)
+        request.sortDescriptors = [NSSortDescriptor(key: "dateCreated", ascending: false)]
+
+        fetchResultsController = NSFetchedResultsController(
+            fetchRequest: request,
+            managedObjectContext: persistentContainer.viewContext,
+            sectionNameKeyPath: nil,
+            cacheName: nil)
+        fetchResultsController.delegate = self
+
+        do {
+            try fetchResultsController.performFetch()
+        } catch {
+            errorMessageLabel.text = "Unable to fetch transactions"
+            NSLog(error.localizedDescription)
+        }
     }
     
     required init?(coder: NSCoder) {
@@ -78,6 +98,42 @@ class BudgetDetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
+    }
+
+    private var isFormValid: Bool {
+        guard let name = nameTextField.text, let amount = amountTextField.text else {
+            return false
+        }
+
+        return !name.isEmpty && !amount.isEmpty && amount.isNumeric && amount.isGreatorThan(0)
+    }
+
+    private func saveTransaction() {
+        guard let name = nameTextField.text, let amount = amountTextField.text else {
+            return
+        }
+
+        let transaction = Transaction(context: persistentContainer.viewContext)
+        transaction.name = name
+        transaction.amount = Double(amount) ?? 0.0
+        transaction.category = budgetCategory
+        transaction.dateCreated = Date()
+
+        do {
+            try persistentContainer.viewContext.save()
+            tableView.reloadData()
+        } catch {
+            errorMessageLabel.text = "Unable to save transaction"
+        }
+    }
+
+    @objc private func saveTransactionButtonPressed() {
+        
+        if isFormValid {
+            saveTransaction()
+        } else {
+            errorMessageLabel.text = "Make sure name and amount is valid"
+        }
     }
 
     private func setupUI() {
@@ -107,6 +163,7 @@ class BudgetDetailViewController: UIViewController {
         nameTextField.widthAnchor.constraint(equalToConstant: 200).isActive = true
         amountTextField.widthAnchor.constraint(equalToConstant: 200).isActive = true
         saveTransactionButton.centerXAnchor.constraint(equalTo: stackView.centerXAnchor).isActive = true
+        saveTransactionButton.addTarget(self, action: #selector(saveTransactionButtonPressed), for: .touchUpInside)
 
         stackView.widthAnchor.constraint(equalTo: view.widthAnchor).isActive = true
         stackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
@@ -118,13 +175,25 @@ class BudgetDetailViewController: UIViewController {
 
 extension BudgetDetailViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        1
+        (fetchResultsController.fetchedObjects ?? []).count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: Constant.transactionCell.rawValue, for: indexPath)
+
+        let transaction = fetchResultsController.object(at: indexPath)
+        // cell configuration
+        var content = cell.defaultContentConfiguration()
+        content.text = transaction.name
+        content.secondaryText = transaction.amount.formatAsCurrency()
+        cell.contentConfiguration = content
+        
         return cell
     }
+}
+
+extension BudgetDetailViewController: NSFetchedResultsControllerDelegate {
+
 }
 
 extension BudgetDetailViewController: UITableViewDelegate {
